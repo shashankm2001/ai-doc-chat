@@ -22,11 +22,11 @@ jobs:
       - run: docker build -t ai-doc-chat .
 
       - run: |
-    docker run -d -p 8000:8000 ai-doc-chat
-    sleep 5
-    docker ps -a
-    docker logs $(docker ps -aq | head -n 1)
-    sleep 10
-    curl http://localhost:8000/ || exit 1
+               docker run -d -p 8000:8000 ai-doc-chat
+               sleep 5
+                docker ps -a
+                docker logs $(docker ps -aq | head -n 1)
+                sleep 10
+                curl http://localhost:8000/ || exit 1
 
           
