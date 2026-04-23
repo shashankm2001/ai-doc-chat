@@ -1,0 +1,27 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - run: pip install -r requirements.txt
+
+      - run: python -c "import fastapi"
+
+      - run: docker build -t ai-doc-chat .
+
+      - run: |
+          docker run -d -p 8000:8000 ai-doc-chat
+          sleep 5
+          curl http://localhost:8000/
