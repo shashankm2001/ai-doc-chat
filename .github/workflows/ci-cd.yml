@@ -22,11 +22,17 @@ jobs:
       - run: docker build -t ai-doc-chat .
 
       - run: |
-               docker run -d -p 8000:8000 ai-doc-chat
-               sleep 5
-                docker ps -a
-                docker logs $(docker ps -aq | head -n 1)
-                sleep 10
-                curl http://localhost:8000/ || exit 1
+          docker run -d -p 8000:8000 \
+            -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+            ai-doc-chat
+
+          echo "Waiting for app to start..."
+
+          for i in {1..10}; do
+            curl http://localhost:8000/ && break
+            sleep 3
+          done
+
+          curl http://localhost:8000/ || exit 1
 
           
